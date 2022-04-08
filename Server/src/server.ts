@@ -28,7 +28,7 @@ async function startServer() {
   // Create a channel
   const channel: Channel = await connection.createChannel();
 
-  let queue = "hello";
+  let queue = "reservationQueue";
   // Makes the queue available to the client
   await channel.assertQueue(queue, { durable: false });
   // Start the consumer

@@ -1,0 +1,12 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "compilerOptions": {
+    "preserveConstEnums": true,
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": ["es2015"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

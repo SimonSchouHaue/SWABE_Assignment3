@@ -15,7 +15,7 @@ namespace Send
             {
                 using (var channel = connection.CreateModel())
                 {
-                    channel.QueueDeclare(queue: "hello",
+                    channel.QueueDeclare(queue: "reservationQueue",
                                  durable: false,
                                  exclusive: false,
                                  autoDelete: false,
@@ -27,7 +27,7 @@ namespace Send
                     var body = Encoding.UTF8.GetBytes(message);
 
                     channel.BasicPublish(exchange: "",
-                                 routingKey: "hello",
+                                 routingKey: "reservationQueue",
                                  basicProperties: null,
                                  body: body);
                     Console.WriteLine(" [x] Sent {0}", message);
