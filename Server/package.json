@@ -1,0 +1,24 @@
+{
+  "name": "assignemt_3",
+  "version": "1.0.0",
+  "description": "RabbitMQ server with mongo db",
+  "main": "server.js",
+  "scripts": {
+    "compile": "tsc -w",
+    "start": "nodemon dist/server.js",
+    "rabbitmq": "docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/amqplib": "^0.8.2",
+    "@types/node": "^17.0.23",
+    "nodemon": "^2.0.15",
+    "typescript": "^4.5.5"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.7.1",
+    "mongoose": "^6.2.9"
+  }
+}
