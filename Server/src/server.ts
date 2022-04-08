@@ -51,6 +51,7 @@ async function startReservationServer() {
 
   // Makes the queue available to the client
   await channel.assertQueue(Reservationqueue, { durable: false });
+  await channel.prefetch(1);
   // Start the consumer
   await channel.consume(Reservationqueue, consumer(channel), { noAck: true });
 }
