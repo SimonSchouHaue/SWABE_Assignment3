@@ -36,4 +36,4 @@ async function startServer() {
 }
 
 startServer();
-console.log("Sever started");
+console.log("Server started");
