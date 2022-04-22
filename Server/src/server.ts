@@ -18,11 +18,10 @@ const consumer =
   async (msg: ConsumeMessage | null): Promise<void> => {
     if (msg) {
       let reservation: Reservation = JSON.parse(msg.content.toString());
-      //console.log(reservation.customerEmail);
 
       let reservationModel = new ReservationModel(reservation);
       let status = await reservationModel.save();
-      console.log(status._id);
+      console.log("orderNumber: " + status._id.toString());
 
       let confirmMsg: Confirm = {
         roomNo: reservation.roomNo,
@@ -36,7 +35,7 @@ const consumer =
         Buffer.from(JSON.stringify(confirmMsg))
       );
       // Acknowledge the message
-      //channel.ack(msg);
+      //channel.ack(status._id.toString());
     }
   };
 async function getConnection(): Promise<Connection> {
