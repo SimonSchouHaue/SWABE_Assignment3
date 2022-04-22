@@ -21,7 +21,7 @@ namespace Send
                                  autoDelete: false,
                                  arguments: null);
 
-                    Reservation reservation = new Reservation { hotelId = 123, checkIn = "1", checkOut = "2", roomNo = 5, customerAddress = "Skjern", customerEmail = "lala@hej.dk", customerName = "Simon" };
+                    Reservation reservation = new Reservation { hotelId = 124, checkIn = "2024-0-07T12:00:17+01:00", checkOut = "2024-07-07T12:00:17+01:00", roomNo = 5, customerAddress = "Skjern", customerEmail = "lala@hej.dk", customerName = "Simon" };
 
                     string message = JsonConvert.SerializeObject(reservation);
                     var body = Encoding.UTF8.GetBytes(message);

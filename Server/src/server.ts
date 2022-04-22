@@ -2,6 +2,7 @@ import { Reservation, ReservationSchema } from "./models/reservation-schema";
 import client, { Connection, Channel, ConsumeMessage } from "amqplib";
 import mongoose from "mongoose";
 import { Confirm } from "./models/confirm";
+import { Console } from "console";
 
 const dbConnection = mongoose.createConnection(
   "mongodb://localhost:27017/Assignment3"
@@ -28,7 +29,9 @@ const consumer =
       let result = await ReservationModel.findOne(filter).lean().exec();
       if (result) {
         msg.content = Buffer.from("Error reservation already exist");
-        channel.nack(msg);
+        channel.nack(msg, true, false);
+        //channel.
+        console.log("Reservation already exists");
       } else {
         let status = await reservationModel.save();
         console.log("orderNumber: " + status._id.toString());
@@ -60,10 +63,13 @@ async function startReservationServer() {
   const channel: Channel = await connection.createChannel();
 
   // Makes the queue available to the client
-  await channel.assertQueue(Reservationqueue, { durable: false });
+  await channel.assertQueue(Reservationqueue, {
+    durable: false,
+    //autoDelete: true,
+  });
   await channel.prefetch(1);
   // Start the consumer
-  await channel.consume(Reservationqueue, consumer(channel), { noAck: true });
+  await channel.consume(Reservationqueue, consumer(channel), { noAck: false });
 }
 
 async function startConfirmsServer() {
