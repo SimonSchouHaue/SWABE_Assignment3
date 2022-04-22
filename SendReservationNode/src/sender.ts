@@ -7,7 +7,7 @@ const startSender = async (): Promise<void> => {
   const channel: Channel = await connection.createChannel();
 
   let queue = "reservationQueue";
-  // Makes the queue available to the client
+
   await channel.assertQueue(queue, { durable: false });
 
   let reservation: Reservation = {
@@ -21,7 +21,7 @@ const startSender = async (): Promise<void> => {
   };
 
   let message = JSON.stringify(reservation);
-  //Send a message to the queue
+
   channel.sendToQueue(queue, Buffer.from(message));
 
   console.log("send message: " + message);

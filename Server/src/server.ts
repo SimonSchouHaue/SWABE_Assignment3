@@ -2,7 +2,6 @@ import { Reservation, ReservationSchema } from "./models/reservation-schema";
 import client, { Connection, Channel, ConsumeMessage } from "amqplib";
 import mongoose from "mongoose";
 import { Confirm } from "./models/confirm";
-import { Console } from "console";
 
 const dbConnection = mongoose.createConnection(
   "mongodb://localhost:27017/Assignment3"
@@ -18,25 +17,36 @@ const consumer =
   async (msg: ConsumeMessage | null): Promise<void> => {
     if (msg) {
       let reservation: Reservation = JSON.parse(msg.content.toString());
-      //console.log(reservation.customerEmail);
 
       let reservationModel = new ReservationModel(reservation);
-      let status = await reservationModel.save();
-      console.log(status._id);
 
-      let confirmMsg: Confirm = {
-        roomNo: reservation.roomNo,
-        customerEmail: reservation.customerEmail,
-        customerName: reservation.customerName,
-        orderNumber: status._id.toString(),
+      let filter = {
+        checkIn: { $gte: reservation.checkIn },
+        checkOut: { $lte: reservation.checkOut },
       };
 
-      channel.sendToQueue(
-        confirmqueue,
-        Buffer.from(JSON.stringify(confirmMsg))
-      );
-      // Acknowledge the message
-      //channel.ack(msg);
+      let result = await ReservationModel.findOne(filter).lean().exec();
+      if (result) {
+        msg.content = Buffer.from("Error reservation already exist");
+        channel.nack(msg);
+      } else {
+        let status = await reservationModel.save();
+        console.log("orderNumber: " + status._id.toString());
+
+        let confirmMsg: Confirm = {
+          roomNo: reservation.roomNo,
+          customerEmail: reservation.customerEmail,
+          customerName: reservation.customerName,
+          orderNumber: status._id.toString(),
+        };
+
+        channel.sendToQueue(
+          confirmqueue,
+          Buffer.from(JSON.stringify(confirmMsg))
+        );
+        // Acknowledge the message
+        channel.ack(msg);
+      }
     }
   };
 async function getConnection(): Promise<Connection> {
