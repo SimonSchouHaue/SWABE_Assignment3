@@ -8,7 +8,7 @@ const startSender = async (): Promise<void> => {
 
   let queue = "reservationQueue";
 
-  await channel.assertQueue(queue, { durable: false });
+  await channel.assertQueue(queue, { durable: true });
 
   let reservation: Reservation = {
     hotelId: 10,

@@ -64,7 +64,7 @@ async function startReservationServer() {
 
   // Makes the queue available to the client
   await channel.assertQueue(Reservationqueue, {
-    durable: false,
+    durable: true,
     //autoDelete: true,
   });
   await channel.prefetch(1);
@@ -78,7 +78,7 @@ async function startConfirmsServer() {
   const channel: Channel = await connection.createChannel();
 
   // Makes the queue available to the client
-  await channel.assertQueue(confirmqueue, { durable: false });
+  await channel.assertQueue(confirmqueue, { durable: true });
 }
 
 getConnection();
