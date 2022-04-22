@@ -16,7 +16,7 @@ namespace confirmConsumer
                 using (var channel = connection.CreateModel())
                 {
                     channel.QueueDeclare(queue: "confirmQueue",
-                                         durable: false,
+                                         durable: true,
                                          exclusive: false,
                                          autoDelete: false,
                                          arguments: null);

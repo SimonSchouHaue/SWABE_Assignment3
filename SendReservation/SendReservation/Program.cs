@@ -13,10 +13,12 @@ namespace Send
             var factory = new ConnectionFactory() { HostName = "localhost" };
             using (var connection = factory.CreateConnection())
             {
+                Console.WriteLine("Send Reservation from C#");
+                Console.ReadLine();
                 using (var channel = connection.CreateModel())
                 {
                     channel.QueueDeclare(queue: "reservationQueue",
-                                 durable: false,
+                                 durable: true,
                                  exclusive: false,
                                  autoDelete: false,
                                  arguments: null);
