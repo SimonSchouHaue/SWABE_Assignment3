@@ -21,20 +21,25 @@ namespace Send
                                  autoDelete: false,
                                  arguments: null);
 
-                    Reservation reservation = new Reservation { hotelId = 123, checkIn = "1", checkOut = "2", roomNo = 5, customerAddress = "Skjern", customerEmail = "lala@hej.dk", customerName = "Simon"};
-                     
+                    Reservation reservation = new Reservation { hotelId = 123, checkIn = "1", checkOut = "2", roomNo = 5, customerAddress = "Skjern", customerEmail = "lala@hej.dk", customerName = "Simon" };
+
                     string message = JsonConvert.SerializeObject(reservation);
                     var body = Encoding.UTF8.GetBytes(message);
 
+                    while(true){ 
                     channel.BasicPublish(exchange: "",
                                  routingKey: "reservationQueue",
                                  basicProperties: null,
                                  body: body);
                     Console.WriteLine(" [x] Sent {0}", message);
+
+                    Console.WriteLine(" Press [enter] to Send again. CTRL+C to close");
+                    Console.ReadLine();
+                    }
                 }
             }
-            Console.WriteLine(" Press [enter] to exit.");
-            Console.ReadLine();
+
+        
         }
     }
 }
